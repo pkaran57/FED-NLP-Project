@@ -2,20 +2,20 @@ from enum import Enum
 
 
 class FOMCDocType(Enum):
-    AGENDAS = 'Ag'
-    RED_BOOKS = 'Bgbk'  # Beige Books/Redbooks
-    BLUE_BOOKS = 'Blbk'
-    FOMC_CHAIR_PRESS_CONFERENCES = 'PrC'
-    GREEN_BOOKS = 'Grbk'
-    GREEN_BLUE_ZIP = 'GrBl'
-    MEMOS = 'Memo'
-    MINUTES = 'Mn'
-    MIN_OF_ACTIONS = 'MoA'  # (1967-1992)
-    POLICY_STATEMENTS = 'St'
-    RECORDS_OF_ACTIONS = 'ROPA'  # (1936-1992)
-    SEP_IND_PROJECTIONS = 'SEP'
-    TEAL_BOOKS = 'Tl'
-    TRANSCRIPTS_PRESENTATION_MATERIALS = 'Trns'
-    EXECUTIVE_COMMITTEE_MINUTES = 'ExCommMin'
-    HISTORICAL_MINUTES = 'HMin'
-    MEMORANDA_OF_DISCUSSION = 'MemD'
+    AGENDAS = "Ag"
+    RED_BOOKS = "Bgbk"  # Beige Books/Redbooks
+    BLUE_BOOKS = "Blbk"
+    FOMC_CHAIR_PRESS_CONFERENCES = "PrC"
+    GREEN_BOOKS = "Grbk"
+    GREEN_BLUE_ZIP = "GrBl"
+    MEMOS = "Memo"
+    MINUTES = "Mn"
+    MIN_OF_ACTIONS = "MoA"  # (1967-1992)
+    POLICY_STATEMENTS = "St"
+    RECORDS_OF_ACTIONS = "ROPA"  # (1936-1992)
+    SEP_IND_PROJECTIONS = "SEP"
+    TEAL_BOOKS = "Tl"
+    TRANSCRIPTS_PRESENTATION_MATERIALS = "Trns"
+    EXECUTIVE_COMMITTEE_MINUTES = "ExCommMin"
+    HISTORICAL_MINUTES = "HMin"
+    MEMORANDA_OF_DISCUSSION = "MemD"

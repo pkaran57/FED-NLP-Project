@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "fed-communications-gatherer"
+version = "1.0.0"
+description = "Module to collect FED communications such as policy statements, minutes, etc."
+authors = ["Karan Patel <karanpatel4567@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "*"
+pydantic = "*"
+beautifulsoup4 = "*"
+lxml = "*"
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
+black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
