@@ -1,10 +1,9 @@
 import json
+import requests
 from urllib.parse import urljoin
 
-import requests
-
-from definitions import FOMC_HOST_BASE_URL
-from fomc.domain.FOMCDocReference import FOMCDocReference
+from src.definitions import FOMC_HOST_BASE_URL
+from src.fomc.domain.FOMCDocReference import FOMCDocReference
 
 
 class FOMCClient:

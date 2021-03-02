@@ -1,10 +1,12 @@
+from bs4 import BeautifulSoup
 from datetime import date
-from typing import List
-
 from pydantic import Field
 from pydantic.main import BaseModel
+from typing import List
+from urllib.request import urlopen
 
-from fomc.domain.FOMCFileReference import FOMCFileReference
+from src.fomc.domain.FOMCDocType import FOMCDocType
+from src.fomc.domain.FOMCFileReference import FOMCFileReference
 
 
 class FOMCDocReference(BaseModel):
@@ -21,3 +23,14 @@ class FOMCDocReference(BaseModel):
                 return html_doc_refs[0].get_full_url()
 
         return None
+
+    def get_content(self):
+        if self.type == FOMCDocType.POLICY_STATEMENTS.value:
+            html = urlopen(self.get_html_doc_url())
+            soup = BeautifulSoup(html, 'lxml')
+
+            paragraphs = soup.find("div", {"class": 'col-xs-12 col-sm-8 col-md-8'}).find_all('p')
+
+            return [paragraph.text for paragraph in paragraphs]
+        else:
+            raise NotImplementedError('Method not implemented for doc type - ' + self.type)

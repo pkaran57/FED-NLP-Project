@@ -1,9 +1,8 @@
-from urllib.parse import urljoin
-
 from pydantic import Field
 from pydantic.main import BaseModel
+from urllib.parse import urljoin
 
-from definitions import FOMC_HOST_BASE_URL
+from src.definitions import FOMC_HOST_BASE_URL
 
 
 class FOMCFileReference(BaseModel):
