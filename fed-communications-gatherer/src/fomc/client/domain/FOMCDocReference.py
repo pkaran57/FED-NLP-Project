@@ -9,8 +9,8 @@ from pydantic.main import BaseModel
 
 from src.definitions import FOMC_HOST_BASE_URL
 from src.fomc.FOMCDoc import FOMCDoc
-from src.fomc.domain.FOMCDocType import FOMCDocType
-from src.fomc.domain.FOMCFileReference import FOMCFileReference
+from src.fomc.client.domain.FOMCDocType import FOMCDocType
+from src.fomc.client.domain.FOMCFileReference import FOMCFileReference
 
 
 class FOMCDocReference(BaseModel):
