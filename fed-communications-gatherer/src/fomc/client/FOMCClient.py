@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 import requests
 
 from src.definitions import FOMC_HOST_BASE_URL
-from src.fomc.domain.FOMCDocReference import FOMCDocReference
+from src.fomc.client.domain.FOMCDocReference import FOMCDocReference
 
 
 class FOMCClient:

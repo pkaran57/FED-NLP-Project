@@ -4,7 +4,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from src.fomc.domain.FOMCDocType import FOMCDocType
+from src.fomc.client.domain.FOMCDocType import FOMCDocType
 
 
 class FOMCDoc(BaseModel):
