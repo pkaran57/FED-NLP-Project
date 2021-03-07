@@ -10,6 +10,7 @@ requests = "*"
 pydantic = "*"
 beautifulsoup4 = "*"
 lxml = "*"
+tqdm = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
