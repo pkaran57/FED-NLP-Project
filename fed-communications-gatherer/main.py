@@ -14,18 +14,20 @@ logger = logging.getLogger("main")
 
 def export_fomc_docs(all_materials, doc_type, output_dir):
     filtered_docs_by_type = [
-        material
-        for material in all_materials
-        if material.type == doc_type.value
+        material for material in all_materials if material.type == doc_type.value
     ]
-    logger.info("Found {} documents of type {}. Exporting them to disk ...".format(len(filtered_docs_by_type), doc_type))
+    logger.info(
+        "Found {} documents of type {}. Exporting them to disk ...".format(
+            len(filtered_docs_by_type), doc_type
+        )
+    )
     for doc in tqdm(filtered_docs_by_type):
         doc.get_fomc_Doc().export_to_disk(output_dir)
 
 
 def read_fomc_docs(dir):
     fomc_docs = []
-    json_files = [file for file in listdir(dir) if file.endswith('.json')]
+    json_files = [file for file in listdir(dir) if file.endswith(".json")]
 
     logger.info("Found {} documents. Reading them into memory ...")
     for file in tqdm(json_files):
@@ -41,4 +43,3 @@ if __name__ == "__main__":
 
     # export_fomc_docs(all_materials, FOMCDocType.POLICY_STATEMENTS, POLICY_STATEMENTS_OUTPUT_DIR)
     fomc_docs = read_fomc_docs(POLICY_STATEMENTS_OUTPUT_DIR)
-

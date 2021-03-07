@@ -33,15 +33,17 @@ class FOMCDocReference(BaseModel):
             if self.url:
                 return urljoin(FOMC_HOST_BASE_URL, self.url)
 
-        raise Exception('Unable to find link to HTML doc for {}'.format(self))
+        raise Exception("Unable to find link to HTML doc for {}".format(self))
 
     def get_fomc_Doc(self) -> FOMCDoc:
         html = urlopen(self.get_html_doc_url())
         soup = BeautifulSoup(html, "lxml")
 
-        return FOMCDoc(meeting_date=self.meeting_date,
-                       paragraphs=self._get_paragraphs(soup),
-                       doc_type=self.type)
+        return FOMCDoc(
+            meeting_date=self.meeting_date,
+            paragraphs=self._get_paragraphs(soup),
+            doc_type=self.type,
+        )
 
     def _get_paragraphs(self, soup) -> List[str]:
         if self.type == FOMCDocType.POLICY_STATEMENTS.value:
