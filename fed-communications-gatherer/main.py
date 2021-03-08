@@ -41,6 +41,11 @@ def get_word_count(docs):
 		word_list = speech.split()
 		print(len(word_list))
 
+# Using the existing data along with all the features extracted above,
+# find out whether the VXX/stock market went up or down
+def DNN():
+	return 0
+
 
 if __name__ == "__main__":
     fomc_communication_docs_service = FOMCCommunicationDocsService()
@@ -59,10 +64,10 @@ if __name__ == "__main__":
     get_number_of_paragraphs(fomc_docs)
     get_word_count(fomc_docs)
 
-    # # perform entity sentiment analysis
-    # entity_sentiment_analyzer = EntitySentimentAnalyzer()
-    # entity_sentiment_result = entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs)
-    # entity_sentiment_result = sorted(entity_sentiment_result, key=lambda item: item[0].meeting_date)
+    # perform entity sentiment analysis
+    entity_sentiment_analyzer = EntitySentimentAnalyzer()
+    entity_sentiment_result = entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs)
+    entity_sentiment_result = sorted(entity_sentiment_result, key=lambda item: item[0].meeting_date)
 
 
     # get sentiment values for a given entity over time
