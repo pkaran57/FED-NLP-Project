@@ -11,6 +11,8 @@ pydantic = "*"
 beautifulsoup4 = "*"
 lxml = "*"
 tqdm = "*"
+nltk = "*"
+google-cloud-language = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
