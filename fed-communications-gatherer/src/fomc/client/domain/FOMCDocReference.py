@@ -52,8 +52,7 @@ class FOMCDocReference(BaseModel):
                 paragraphs = statement_div.find_all("p")
             else:
                 paragraphs = soup.find_all("p")
-
-            return [paragraph.text for paragraph in paragraphs]
+            return [paragraph.text for paragraph in paragraphs if paragraph.text and paragraph.text.strip()]
         else:
             raise NotImplementedError(
                 "Method not implemented for doc type - " + self.type
