@@ -16,3 +16,6 @@ class FOMCDoc(BaseModel):
         file_name = "{}-{}.json".format(self.meeting_date, self.doc_type.value)
         with open(os.path.join(export_dir, file_name), "w", encoding="utf-8") as file:
             file.write(self.json())
+
+    def get_content(self):
+        return " ".join(paragraph.strip() for paragraph in self.paragraphs)
