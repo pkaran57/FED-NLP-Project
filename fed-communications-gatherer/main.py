@@ -3,6 +3,7 @@ import logging
 from src.definitions import POLICY_STATEMENTS_OUTPUT_DIR
 from src.features.EntitySentimentAnalyzer import EntitySentimentAnalyzer
 from src.fomc.FOMCCommunicationDocsService import FOMCCommunicationDocsService
+from src.fomc.client.domain.FOMCDocType import FOMCDocType
 
 logging.basicConfig(format="'%(asctime)s' %(name)s : %(message)s'", level=logging.INFO)
 logger = logging.getLogger("main")
@@ -22,7 +23,7 @@ def get_date_to_entity_sentiment(entity_name, entity_sentiment_result):
 if __name__ == "__main__":
     fomc_communication_docs_service = FOMCCommunicationDocsService()
 
-    # Note: only run this code once to download all the FOMC documents to your local disk
+    # #Note: only run this code once to download all the FOMC documents to your local disk
     # fomc_communication_docs_service.export_fomc_docs(
     #     FOMCDocType.POLICY_STATEMENTS, POLICY_STATEMENTS_OUTPUT_DIR
     # )
