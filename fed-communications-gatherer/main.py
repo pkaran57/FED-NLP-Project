@@ -27,12 +27,14 @@ if __name__ == "__main__":
     #     FOMCDocType.POLICY_STATEMENTS, POLICY_STATEMENTS_OUTPUT_DIR
     # )
 
+    # load FOMC docs from disk
     fomc_docs = fomc_communication_docs_service.read_fomc_docs(POLICY_STATEMENTS_OUTPUT_DIR)
 
+    # perform entity sentiment analysis
     entity_sentiment_analyzer = EntitySentimentAnalyzer()
-
     entity_sentiment_result = entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs[100:125])
     entity_sentiment_result = sorted(entity_sentiment_result, key=lambda item: item[0].meeting_date)
 
+    # get sentiment values for a given entity over time
     date_to_entity_sentiment = get_date_to_entity_sentiment('employment', entity_sentiment_result)
     print(date_to_entity_sentiment)
