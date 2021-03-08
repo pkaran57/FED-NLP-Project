@@ -14,13 +14,17 @@ logger = logging.getLogger("main")
 
 def get_date_to_entity_sentiment(entity_name, entity_sentiment_result):
     date_to_entity_sentiment = []
+    # TODO: aggregate lower and upper case entity names, aggregate by buckets
     for fomc_doc, entities in entity_sentiment_result:
         matching_entities = [entity for entity in entities if entity.name.lower() == entity_name and entity.sentiment.score]
         if matching_entities:
             if len(matching_entities) > 1:
                 logger.info("Found {} entity {} times in the same doc".format(entity_name, len(matching_entities)))
             date_to_entity_sentiment.append((fomc_doc.meeting_date, matching_entities[0].sentiment.score))
-    return sorted(date_to_entity_sentiment, key=lambda item: item[0])
+    date_to_entity_sentiment = sorted(date_to_entity_sentiment, key=lambda item: item[0])
+
+    pd.DataFrame.from_records(date_to_entity_sentiment).to_excel(os.path.join(OUTPUT_DIR, 'sentiment-for-{}-entity-overtime.xlsx'.format(entity_name)))
+    return date_to_entity_sentiment
 
 
 # Feature extraction: Get number of paragraphs per speech.
@@ -48,6 +52,7 @@ if __name__ == "__main__":
     # )
 
 
+
     # load FOMC docs from disk
     fomc_docs = fomc_communication_docs_service.read_fomc_docs(POLICY_STATEMENTS_OUTPUT_DIR)
 
@@ -59,9 +64,10 @@ if __name__ == "__main__":
     # entity_sentiment_result = entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs)
     # entity_sentiment_result = sorted(entity_sentiment_result, key=lambda item: item[0].meeting_date)
 
-    # # get sentiment values for a given entity over time
-    # date_to_entity_sentiment = get_date_to_entity_sentiment('employment', entity_sentiment_result)
-    # print(date_to_entity_sentiment)
+
+    # get sentiment values for a given entity over time
+    date_to_entity_sentiment = get_date_to_entity_sentiment('inflation', entity_sentiment_result)
+    print(date_to_entity_sentiment)
 
     # # identify most common entities for which sentiment exists
     # entity_to_count_dict = dict()
