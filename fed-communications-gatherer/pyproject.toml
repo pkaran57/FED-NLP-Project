@@ -13,6 +13,7 @@ lxml = "*"
 tqdm = "*"
 nltk = "*"
 google-cloud-language = "*"
+pandas = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
