@@ -14,6 +14,7 @@ tqdm = "*"
 nltk = "*"
 google-cloud-language = "*"
 pandas = "*"
+openpyxl = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
