@@ -16,15 +16,22 @@ def get_date_to_entity_sentiment(entity_name, entity_sentiment_result):
     date_to_entity_sentiment = []
     # TODO: aggregate lower and upper case entity names, aggregate by buckets
     for fomc_doc, entities in entity_sentiment_result:
-        matching_entities = [entity for entity in entities if entity.name.lower() == entity_name and entity.sentiment.score]
+        matching_entities = [entity for entity in entities if entity_name.lower() == entity.name.lower() and entity.sentiment.score]
         if matching_entities:
             if len(matching_entities) > 1:
                 logger.info("Found {} entity {} times in the same doc".format(entity_name, len(matching_entities)))
             date_to_entity_sentiment.append((fomc_doc.meeting_date, matching_entities[0].sentiment.score))
     date_to_entity_sentiment = sorted(date_to_entity_sentiment, key=lambda item: item[0])
 
-    pd.DataFrame.from_records(date_to_entity_sentiment).to_excel(os.path.join(OUTPUT_DIR, 'sentiment-for-{}-entity-overtime.xlsx'.format(entity_name)))
+    if date_to_entity_sentiment:
+        dataframe = pd.DataFrame.from_records(date_to_entity_sentiment)
+        dataframe.to_excel(os.path.join(OUTPUT_DIR, 'sentiment-for-{}-entity-overtime.xlsx'.format(entity_name)))
+        #TODO: fix plot
+        fig = dataframe.plot().get_figure()
+        fig.savefig(os.path.join(OUTPUT_DIR, '{}.png'.format(entity_name)))
+
     return date_to_entity_sentiment
+
 
 
 # Feature extraction: Get number of paragraphs per speech.
@@ -45,6 +52,18 @@ def get_word_count(docs):
 # find out whether the VXX/stock market went up or down
 def DNN():
 	return 0
+
+def get_entity_doc_counts(entity_sentiment_result):
+    entity_to_count_dict = dict()
+    for fomc_doc, entities in entity_sentiment_result:
+        entity_names_in_doc = {entity.name for entity in entities if entity.sentiment.score}
+        for entity_name in entity_names_in_doc:
+            if entity_name in entity_to_count_dict:
+                entity_to_count_dict[entity_name] = entity_to_count_dict[entity_name] + 1
+            else:
+                entity_to_count_dict[entity_name] = 1
+    return entity_to_count_dict
+
 
 
 if __name__ == "__main__":
@@ -71,16 +90,12 @@ if __name__ == "__main__":
 
 
     # get sentiment values for a given entity over time
-    date_to_entity_sentiment = get_date_to_entity_sentiment('inflation', entity_sentiment_result)
-    print(date_to_entity_sentiment)
+    for entity in ['inflation', 'employment', 'unemployment', 'job gain', 'oil prices', 'economy', 'monetary policy', 'labor market', 'housing']:
+        date_to_entity_sentiment = get_date_to_entity_sentiment(entity, entity_sentiment_result)
+        print(date_to_entity_sentiment)
 
-    # # identify most common entities for which sentiment exists
-    # entity_to_count_dict = dict()
-    # for fomc_doc, entities in entity_sentiment_result:
-    #     entity_names_in_doc = {entity.name for entity in entities if entity.sentiment.score}
-    #     for entity_name in entity_names_in_doc:
-    #         if entity_name in entity_to_count_dict:
-    #             entity_to_count_dict[entity_name] = entity_to_count_dict[entity_name] + 1
-    #         else:
-    #             entity_to_count_dict[entity_name] = 1
-    # pd.DataFrame.from_dict(entity_to_count_dict, orient='index').to_csv(os.path.join(OUTPUT_DIR, 'entity-count.csv'))
+
+    # identify most common entities for which sentiment exists
+    entity_to_count_dict = get_entity_doc_counts(entity_sentiment_result)
+    pd.DataFrame.from_dict(entity_to_count_dict, orient='index').to_csv(os.path.join(OUTPUT_DIR, 'entity-count.csv'))
+
