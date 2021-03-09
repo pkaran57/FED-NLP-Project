@@ -15,10 +15,14 @@ logger = logging.getLogger("main")
 def get_entity_doc_counts(entity_sentiment_result):
     entity_to_count_dict = dict()
     for fomc_doc, entities in entity_sentiment_result:
-        entity_names_in_doc = {entity.name for entity in entities if entity.sentiment.score}
+        entity_names_in_doc = {
+            entity.name for entity in entities if entity.sentiment.score
+        }
         for entity_name in entity_names_in_doc:
             if entity_name in entity_to_count_dict:
-                entity_to_count_dict[entity_name] = entity_to_count_dict[entity_name] + 1
+                entity_to_count_dict[entity_name] = (
+                    entity_to_count_dict[entity_name] + 1
+                )
             else:
                 entity_to_count_dict[entity_name] = 1
     return entity_to_count_dict
@@ -33,21 +37,43 @@ if __name__ == "__main__":
     # )
 
     # load FOMC docs from disk
-    fomc_docs = fomc_communication_docs_service.read_fomc_docs(POLICY_STATEMENTS_OUTPUT_DIR)
+    fomc_docs = fomc_communication_docs_service.read_fomc_docs(
+        POLICY_STATEMENTS_OUTPUT_DIR
+    )
 
     # perform entity sentiment analysis
     entity_sentiment_analyzer = EntitySentimentAnalyzer()
-    entity_sentiment_result = entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs)
-    entity_sentiment_result = sorted(entity_sentiment_result, key=lambda item: item[0].meeting_date)
+    entity_sentiment_result = (
+        entity_sentiment_analyzer.perform_entity_sentiment_analysis(fomc_docs)
+    )
+    entity_sentiment_result = sorted(
+        entity_sentiment_result, key=lambda item: item[0].meeting_date
+    )
 
     # get sentiment values for a given entity over time
     sentiment_over_time_dfs = []
-    for entity in ['inflation', 'employment', 'unemployment', 'job gain', 'oil prices', 'economy', 'monetary policy', 'labor market', 'housing']:
-        date_to_entity_sentiment = EntitySentimentAnalyzer.get_entity_sentiment_overtime(entity, entity_sentiment_result)
+    for entity in [
+        "inflation",
+        "employment",
+        "unemployment",
+        "job gain",
+        "oil prices",
+        "economy",
+        "monetary policy",
+        "labor market",
+        "housing",
+    ]:
+        date_to_entity_sentiment = (
+            EntitySentimentAnalyzer.get_entity_sentiment_overtime(
+                entity, entity_sentiment_result
+            )
+        )
         if date_to_entity_sentiment is not None:
             sentiment_over_time_dfs.append(date_to_entity_sentiment)
     PlotterUtil.plot_entity_sentiments_over_time(sentiment_over_time_dfs)
 
     # identify most common entities for which sentiment exists
     entity_to_count_dict = get_entity_doc_counts(entity_sentiment_result)
-    pd.DataFrame.from_dict(entity_to_count_dict, orient='index').to_csv(os.path.join(OUTPUT_DIR, 'entity-count.csv'))
+    pd.DataFrame.from_dict(entity_to_count_dict, orient="index").to_csv(
+        os.path.join(OUTPUT_DIR, "entity-count.csv")
+    )
