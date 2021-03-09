@@ -54,8 +54,12 @@ if __name__ == "__main__":
     sentiment_over_time_dfs = []
     for entity in [
         "inflation",
+        "risks",
+        "growth"
         "employment",
-        "unemployment",
+        "price stability",
+        "unemployment rate",
+        "inflation expectations",
         "job gain",
         "oil prices",
         "economy",
