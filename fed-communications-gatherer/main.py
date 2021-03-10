@@ -17,7 +17,7 @@ def get_entity_doc_counts(entity_sentiment_result):
     entity_to_count_dict = dict()
     for fomc_doc, entities in entity_sentiment_result:
         entity_names_in_doc = {
-            entity.name for entity in entities if entity.sentiment.score
+            entity.name.lower() for entity in entities if entity.sentiment.score
         }
         for entity_name in entity_names_in_doc:
             if entity_name in entity_to_count_dict:
