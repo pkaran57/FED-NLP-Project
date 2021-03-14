@@ -63,21 +63,42 @@ def get_ngram_count(docs, n=1):
 
 # Feature extraction: Get the number of nouns, verbs, and adjectives per speech
 def get_pos_tags(docs):
-	noun_count = []
-	verb_count = []
-	adjective_count = []
+	noun_list = []
+	verb_list = []
+	adjective_list = []
 	
 	# For each speech, split it, tokenize it, pos tag it, and find out how many are nouns/verbs/adjectives
 	# NN = noun
 	# VB = verb
 	# JJ = adjective
 	for fomc_doc in docs:
-		speech = " ".join(fomc_doc.paragraphs)
-		#word_list = speech.split()
-		tags = nltk.pos_tag(nltk.word_tokenize(speech))
-		print(tags)
+		noun_count = 0
+		verb_count = 0
+		adjective_count = 0
 
-	return noun_count, verb_count, adjective_count
+		speech = " ".join(fomc_doc.paragraphs)
+		print(speech)
+		tags = nltk.pos_tag(nltk.word_tokenize(speech))
+		print("\n")
+		#print(tags)
+		print("\n")
+
+		# For each tag, find out if it is a noun, verb, or adjective
+		for (word, tag) in tags:
+			if tag == "NN":
+				noun_count += 1
+				print(word)
+			elif tag == "JJ":
+				adjective_count += 1
+			elif tag == "VB":
+				verb_count += 1
+		print(noun_list)
+		noun_list.append(noun_count)
+		print(noun_list)
+		verb_list.append(verb_count)
+		adjective_list.append(adjective_count)
+
+	return noun_list, verb_list, adjective_list
 
 
 
@@ -95,7 +116,7 @@ def get_features(docs):
     # Create the dataframe storing the features.
     # This will be used as the input to the DNN.
     # Each row represents one speech and its features.
-    data = {"paragraph count": p_count, "word count": word_count, "unigram count": unigram_count, "bigram count": bigram_count, "trigram count": trigram_count}
+    data = {"paragraph count": p_count, "word count": word_count, "unigram count": unigram_count, "bigram count": bigram_count, "trigram count": trigram_count, "noun count": nouns,"verb count": verbs,"adjective count": adjs}
     features = pd.DataFrame.from_dict(data).to_csv(os.path.join(OUTPUT_DIR, 'features_DEBUG.csv'), index=False)
 
 
@@ -162,17 +183,6 @@ if __name__ == "__main__":
     # # 3/8/2021 - Perform feature extraction on the FOMC speeches.
     # Save the results to a file
     get_features(fomc_docs)
-    # p_count = get_number_of_paragraphs(fomc_docs)
-    # word_count = get_word_count(fomc_docs)
-    # unigram_count = get_ngram_count(fomc_docs, 1)
-    # bigram_count = get_ngram_count(fomc_docs, 2)
-    # trigram_count = get_ngram_count(fomc_docs, 3)
-
-    # # Create the dataframe storing the features.
-    # # This will be used as the input to the DNN.
-    # # Each row represents one speech and its features.
-    # data = {"paragraph count": p_count, "word count": word_count, "unigram count": unigram_count, "bigram count": bigram_count, "trigram count": trigram_count}
-    # features = pd.DataFrame.from_dict(data).to_csv(os.path.join(OUTPUT_DIR, 'features_DEBUG.csv'), index=False)
 
 
     # perform entity sentiment analysis
