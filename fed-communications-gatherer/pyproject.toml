@@ -15,6 +15,7 @@ google-cloud-language = "*"
 pandas = "*"
 openpyxl = "*"
 matplotlib = "*"
+nltk = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"

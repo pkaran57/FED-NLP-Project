@@ -12,7 +12,8 @@ from src.plot.PlotterUtil import PlotterUtil
 
 # NLTK for bigram counts
 import nltk
-nltk.download('averaged_perceptron_tagger')
+
+nltk.download("averaged_perceptron_tagger")
 
 logging.basicConfig(format="'%(asctime)s' %(name)s : %(message)s'", level=logging.INFO)
 logger = logging.getLogger("main")
@@ -25,25 +26,27 @@ logger = logging.getLogger("main")
 # Feature extraction: Get number of paragraphs per speech.
 # Return a list of paragraph counts where each entry is for one speech.
 def get_number_of_paragraphs(docs):
-	paragraph_count = []
-	for fomc_doc in docs:
-		#print("Document")
-		#print(len(fomc_doc.paragraphs))
-		#print("\n")
-		paragraph_count.append(len(fomc_doc.paragraphs))
-	return paragraph_count
+    paragraph_count = []
+    for fomc_doc in docs:
+        # print("Document")
+        # print(len(fomc_doc.paragraphs))
+        # print("\n")
+        paragraph_count.append(len(fomc_doc.paragraphs))
+    return paragraph_count
+
 
 # Feature extraction: Get number of words per speech.
 # Return a list of word counts where each entry is for one speech.
 # This also happens to be the unigram count.
 def get_word_count(docs):
-	word_count = []
-	for fomc_doc in docs:
-		speech = " ".join(fomc_doc.paragraphs)
-		word_list = speech.split()
-		#print(len(word_list))
-		word_count.append(len(word_list))
-	return word_count
+    word_count = []
+    for fomc_doc in docs:
+        speech = " ".join(fomc_doc.paragraphs)
+        word_list = speech.split()
+        # print(len(word_list))
+        word_count.append(len(word_list))
+    return word_count
+
 
 # Feature extraction: Get number of words per speech.
 # Return a list of word counts where each entry is for one speech.
@@ -52,60 +55,59 @@ def get_word_count(docs):
 # n=2 for bigram
 # n=3 for trigram
 def get_ngram_count(docs, n=1):
-	ngram_count = []
-	for fomc_doc in docs:
-		speech = " ".join(fomc_doc.paragraphs)
-		word_list = speech.split()
-		#print(list(nltk.ngrams(word_list, n)))
-		#print(len(list(nltk.ngrams(word_list, n))))
-		ngram_count.append(len(list(nltk.ngrams(word_list, n))))
-	return ngram_count
+    ngram_count = []
+    for fomc_doc in docs:
+        speech = " ".join(fomc_doc.paragraphs)
+        word_list = speech.split()
+        # print(list(nltk.ngrams(word_list, n)))
+        # print(len(list(nltk.ngrams(word_list, n))))
+        ngram_count.append(len(list(nltk.ngrams(word_list, n))))
+    return ngram_count
+
 
 # Feature extraction: Get the number of nouns, verbs, and adjectives per speech
 def get_pos_tags(docs):
-	noun_list = []
-	verb_list = []
-	adjective_list = []
-	
-	# For each speech, split it, tokenize it, pos tag it, and find out how many are nouns/verbs/adjectives
-	# NN = noun
-	# VB = verb
-	# JJ = adjective
-	for fomc_doc in docs:
-		noun_count = 0
-		verb_count = 0
-		adjective_count = 0
+    noun_list = []
+    verb_list = []
+    adjective_list = []
 
-		speech = " ".join(fomc_doc.paragraphs)
-		print(speech)
-		tags = nltk.pos_tag(nltk.word_tokenize(speech))
-		print("\n")
-		#print(tags)
-		print("\n")
+    # For each speech, split it, tokenize it, pos tag it, and find out how many are nouns/verbs/adjectives
+    # NN = noun
+    # VB = verb
+    # JJ = adjective
+    for fomc_doc in docs:
+        noun_count = 0
+        verb_count = 0
+        adjective_count = 0
 
-		# For each tag, find out if it is a noun, verb, or adjective
-		for (word, tag) in tags:
-			if tag == "NN":
-				noun_count += 1
-				print(word)
-			elif tag == "JJ":
-				adjective_count += 1
-			elif tag == "VB":
-				verb_count += 1
-		print(noun_list)
-		noun_list.append(noun_count)
-		print(noun_list)
-		verb_list.append(verb_count)
-		adjective_list.append(adjective_count)
+        speech = " ".join(fomc_doc.paragraphs)
+        print(speech)
+        tags = nltk.pos_tag(nltk.word_tokenize(speech))
+        print("\n")
+        # print(tags)
+        print("\n")
 
-	return noun_list, verb_list, adjective_list
+        # For each tag, find out if it is a noun, verb, or adjective
+        for (word, tag) in tags:
+            if tag == "NN":
+                noun_count += 1
+                print(word)
+            elif tag == "JJ":
+                adjective_count += 1
+            elif tag == "VB":
+                verb_count += 1
+        print(noun_list)
+        noun_list.append(noun_count)
+        print(noun_list)
+        verb_list.append(verb_count)
+        adjective_list.append(adjective_count)
 
-
+    return noun_list, verb_list, adjective_list
 
 
 # Extract features from the FOMC docs
 def get_features(docs):
-	# 3/8/2021 - Perform feature extraction on the FOMC speeches.
+    # 3/8/2021 - Perform feature extraction on the FOMC speeches.
     p_count = get_number_of_paragraphs(fomc_docs)
     word_count = get_word_count(fomc_docs)
     unigram_count = get_ngram_count(fomc_docs, 1)
@@ -116,8 +118,19 @@ def get_features(docs):
     # Create the dataframe storing the features.
     # This will be used as the input to the DNN.
     # Each row represents one speech and its features.
-    data = {"paragraph count": p_count, "word count": word_count, "unigram count": unigram_count, "bigram count": bigram_count, "trigram count": trigram_count, "noun count": nouns,"verb count": verbs,"adjective count": adjs}
-    features = pd.DataFrame.from_dict(data).to_csv(os.path.join(OUTPUT_DIR, 'features_DEBUG.csv'), index=False)
+    data = {
+        "paragraph count": p_count,
+        "word count": word_count,
+        "unigram count": unigram_count,
+        "bigram count": bigram_count,
+        "trigram count": trigram_count,
+        "noun count": nouns,
+        "verb count": verbs,
+        "adjective count": adjs,
+    }
+    features = pd.DataFrame.from_dict(data).to_csv(
+        os.path.join(OUTPUT_DIR, "features_DEBUG.csv"), index=False
+    )
 
 
 def get_entity_doc_counts(entity_sentiment_result):
@@ -141,8 +154,7 @@ def plot_entity_sentiments_over_time(entity_sentiment_result):
     for entity in [
         "inflation",
         "risks",
-        "growth"
-        "employment",
+        "growth" "employment",
         "price stability",
         "unemployment rate",
         "inflation expectations",
@@ -167,13 +179,10 @@ def plot_entity_sentiments_over_time(entity_sentiment_result):
 if __name__ == "__main__":
     fomc_communication_docs_service = FOMCCommunicationDocsService()
 
-
     # #Note: only run this code once to download all the FOMC documents to your local disk
     # fomc_communication_docs_service.export_fomc_docs(
     #     FOMCDocType.POLICY_STATEMENTS, POLICY_STATEMENTS_OUTPUT_DIR
     # )
-
-
 
     # load FOMC docs from disk
     fomc_docs = fomc_communication_docs_service.read_fomc_docs(
@@ -183,7 +192,6 @@ if __name__ == "__main__":
     # # 3/8/2021 - Perform feature extraction on the FOMC speeches.
     # Save the results to a file
     get_features(fomc_docs)
-
 
     # perform entity sentiment analysis
     entity_sentiment_analyzer = EntitySentimentAnalyzer()
@@ -202,4 +210,3 @@ if __name__ == "__main__":
     pd.DataFrame.from_dict(entity_to_count_dict, orient="index").to_csv(
         os.path.join(OUTPUT_DIR, "entity-count.csv")
     )
-
