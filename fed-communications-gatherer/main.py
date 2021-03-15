@@ -154,7 +154,8 @@ def plot_entity_sentiments_over_time(entity_sentiment_result):
     for entity in [
         "inflation",
         "risks",
-        "growth" "employment",
+        "growth",
+        "employment",
         "price stability",
         "unemployment rate",
         "inflation expectations",
@@ -201,6 +202,9 @@ if __name__ == "__main__":
     entity_sentiment_result = sorted(
         entity_sentiment_result, key=lambda item: item[0].meeting_date
     )
+
+    # generate and output samples for every doc
+    # FOMCFeatureGenerator().generate_and_output_features(entity_sentiment_result)
 
     # get sentiment values for a given entity over time
     plot_entity_sentiments_over_time(entity_sentiment_result)
