@@ -9,6 +9,12 @@ from src.fomc.FOMCFeatureGenerator import FOMCFeatureGenerator
 from src.fomc.client.domain.FOMCDocType import FOMCDocType
 from src.plot.PlotterUtil import PlotterUtil
 
+
+# NLTK for bigram counts
+import nltk
+
+nltk.download("averaged_perceptron_tagger")
+
 logging.basicConfig(format="'%(asctime)s' %(name)s : %(message)s'", level=logging.INFO)
 logger = logging.getLogger("main")
 
@@ -34,7 +40,7 @@ def plot_entity_sentiments_over_time(entity_sentiment_result):
     for entity in [
         "inflation",
         "risks",
-        "growth"
+        "growth",
         "employment",
         "price stability",
         "unemployment rate",
@@ -56,10 +62,11 @@ def plot_entity_sentiments_over_time(entity_sentiment_result):
     PlotterUtil.plot_entity_sentiments_over_time(sentiment_over_time_dfs)
 
 
+# Call the main function
 if __name__ == "__main__":
     fomc_communication_docs_service = FOMCCommunicationDocsService()
 
-    # Note: only run this code once to download all the FOMC documents to your local disk
+    # #Note: only run this code once to download all the FOMC documents to your local disk
     # fomc_communication_docs_service.export_fomc_docs(
     #     FOMCDocType.POLICY_STATEMENTS, POLICY_STATEMENTS_OUTPUT_DIR
     # )
@@ -79,7 +86,7 @@ if __name__ == "__main__":
     )
 
     # generate and output samples for every doc
-    # FOMCFeatureGenerator().generate_and_output_features(entity_sentiment_result)
+    FOMCFeatureGenerator().generate_and_output_features(entity_sentiment_result)
 
     # get sentiment values for a given entity over time
     plot_entity_sentiments_over_time(entity_sentiment_result)
