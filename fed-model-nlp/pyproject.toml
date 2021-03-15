@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "fed-model-nlp"
+version = "1.0.0"
+description = "Binary classifier models for identifying if a FED speech will cause S and P 500 to rise or fall. "
+authors = ["Karan Patel <karanpatel4567@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "3.8.*"
+
+pydantic = "*"
+
+scikit-learn = "*"
+spacy = "*"
+nltk = "*"
+tensorflow = "*"
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
+black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
