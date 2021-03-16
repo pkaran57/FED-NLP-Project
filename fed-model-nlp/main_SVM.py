@@ -4,6 +4,7 @@ from datetime import datetime
 
 import numpy as np
 from sklearn import metrics
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.svm import LinearSVC
@@ -46,6 +47,13 @@ for pos_tag_key in ["noun_count", "verb_count", "adjective_count"]:
 
 for entity_name in ["committee", "employment", "price stability", "mandate", "inflation", "investment", "growth", "household spending", "stance", "business"]:
     feature_transformers.append((f"entity-sentiment-{entity_name}", EntitySentimentTransformer(entity_name)))
+
+
+def preprocessor_func(sample):
+    return " ".join(sample['fomc_doc']['paragraphs'])
+
+
+feature_transformers.append(('tfidf', TfidfVectorizer(preprocessor=preprocessor_func, ngram_range=(1, 3))))
 
 union = FeatureUnion(feature_transformers)
 
