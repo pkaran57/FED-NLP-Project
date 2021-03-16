@@ -5,8 +5,8 @@ from datetime import datetime
 import numpy as np
 from sklearn import metrics
 from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.svm import LinearSVC
 
 from fed_model_nlp.definitions import FOMC_SPEECH_SAMPLES_DIR
 from fed_model_nlp.transformers.EntitySentimentTransformer import EntitySentimentTransformer
@@ -52,7 +52,7 @@ union = FeatureUnion(feature_transformers)
 text_clf_pipeline = Pipeline([
     ('union', union),
     # ('tfidf', TfidfTransformer(use_idf=False)),
-    ('clf', MultinomialNB(alpha=0.01)),
+    ('clf', LinearSVC(loss='squared_hinge'))
 ])
 
 text_clf_pipeline.fit(x_train, y_train)
