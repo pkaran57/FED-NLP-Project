@@ -59,7 +59,6 @@ union = FeatureUnion(feature_transformers)
 
 text_clf_pipeline = Pipeline([
     ('union', union),
-    # ('tfidf', TfidfTransformer(use_idf=False)),
     ('clf', LinearSVC(loss='squared_hinge'))
 ])
 
