@@ -1,6 +1,6 @@
 # FED-NLP-Project
 
-A deep learning model to predict direction of change in VIX by leveraging entity sentiment analysis on FED statements.
+Binary classification model to help predict the "intraday" direction of change in the S&P 500 Index caused by issuance of a FOMC policy statement
 
 ## Modules
 
